@@ -1,0 +1,29 @@
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return dfs(root).isB;
+    }
+
+    private class ReturnData{
+        public long minval;
+        public long maxval;
+        public boolean isB;
+    }
+
+    private ReturnData dfs(TreeNode root){
+        if(root == null){
+            ReturnData info = new ReturnData();
+            info.isB = true;
+            info.minval = Integer.MAX_VALUE+1L;
+            info.maxval = Integer.MIN_VALUE-1L;
+            return info;
+        }
+        ReturnData left  = dfs(root.left);
+        ReturnData right = dfs(root.right);
+
+        ReturnData result = new ReturnData();
+        result.isB = left.maxval < root.val && right.minval > root.val && left.isB && right.isB;
+        result.maxval = Math.max(root.val,Math.max(left.maxval,right.maxval));
+        result.minval = Math.min(root.val,Math.min(left.minval,right.minval));
+        return result;
+    }
+}
